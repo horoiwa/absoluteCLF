@@ -14,6 +14,8 @@
 
 >SVC連結モード
 
+> random erasing
+
 ### 使い方
 
 `images/train` および `images/valid` にカテゴリ数と同数のフォルダを作成し、画像を配置する
