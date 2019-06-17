@@ -1,12 +1,13 @@
 import glob
 import os
+import shutil
 
-from PIL import Image
-import numpy as np
+from keras.callbacks import ModelCheckpoint
 
-from src.util import folder_check, cleanup
+from config import BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, EPOCHS
+from src.generator import customGenerator
 from src.processing import preprocessing
-from config import DATA_GEN_ARGS, CONFIGS
+from src.util import cleanup, folder_check, get_uniquename, get_latestname
 
 
 def main(prepare, train):
@@ -39,10 +40,41 @@ def create_dataset(categories):
 
 
 def run_training():
-    pass
+    trainGene = customGenerator(batch_size=BATCH_SIZE,
+                                train_path='__dataset__',
+                                image_folder='train',
+                                aug_dict=DATA_GEN_ARGS,
+                                save_to_dir=None,
+                                image_color_mode="rgb",)
 
+    validGene = customGenerator(batch_size=BATCH_SIZE,
+                                train_path='__dataset__',
+                                image_folder='valid',
+                                aug_dict=None,
+                                save_to_dir=None,
+                                image_color_mode="rgb",)
 
+    if os.path.exists("__checkpoints__"):
+        shutil.rmtree("__checkpoints__")
+    os.makedirs("checkpoints")
+     
+    hdfname = get_uniquename("__checkpoints__/model_", 1)
+    model_checkpoint = ModelCheckpoint('{}.hdf5'.format(hdfname), 
+                                       monitor='loss', verbose=1,
+                                       save_best_only=True)
 
+    trained_weight = get_latestname("__checkpoints__/model_", 1) 
+    model = load_model(trained_weight) 
+
+    n_train_images = len(glob.glob('__dataset__/train/*'))
+    n_valid_images = len(glob.glob('__dataset__/valid/*'))
+    model.fit_generator(trainGene, 
+                        steps_per_epoch=n_train_images // BATCH_SIZE,
+                        epochs=EPOCHS,
+                        validation_data=validGene,
+                        validation_steps=n_valid_images // BATCH_SIZE,
+                        callbacks=[model_checkpoint])
+    
 
 if __name__ == '__main__':
     main(prepare=False, train=True)

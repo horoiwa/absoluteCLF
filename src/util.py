@@ -3,7 +3,7 @@ import shutil
 
 
 def cleanup(mode='all'):
-    folders = ['__dataset__']
+    folders = ['__dataset__', '__checkpoints__']
 
     for folder in folders:
         if os.path.exists(folder):
@@ -24,6 +24,24 @@ def folder_check():
     if dirs_train != dirs_valid:
         raise Exception("Error: train and valid not consisted")
 
+
+def get_uniquename(name, n):
+    uniquename = name + str(n)
+    if os.path.exists(uniquename):
+        uniquename = get_uniquename(name, n+1) 
+    return uniquename
+
+
+def get_latestname(name, n):
+    currentname = name + str(n)
+    nextname = name + str(n+1)
+    if os.path.exists(nextname):
+        get_latestname(name, n+1)
+    elif os.path.exists(currentname):
+        return currentname
+    else:
+        return None
+        
 
 if __name__ == '__main__':
     folder_check()

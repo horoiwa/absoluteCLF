@@ -27,7 +27,7 @@ def modification(image, name):
     images = [image]
     names = [name]
 
-    images = [image.resize((512,512)) for image in images]
+    images = [image.resize((512, 512)) for image in images]
     names = [name for name in names]
 
     return images, names
