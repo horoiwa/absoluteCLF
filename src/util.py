@@ -3,7 +3,7 @@ import shutil
 
 
 def cleanup(mode='all'):
-    folders = ['__dataset__', '__checkpoints__']
+    folders = ['__dataset__', '__checkpoints__', 'test_generator']
 
     for folder in folders:
         if os.path.exists(folder):

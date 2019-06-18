@@ -14,5 +14,6 @@ DATA_GEN_ARGS = dict(rescale=1./255,
                      brightness_range=[0.8, 1.0],
                      shear_range=0.05,
                      zoom_range=0.05,
+                     vertical_flip=True,
                      horizontal_flip=True,
                      fill_mode='nearest')
