@@ -1,36 +1,56 @@
-from keras.applications.resnet50 import ResNet50
+from keras.applications.inception_v3 import InceptionV3
 from keras.models import Sequential, Model
-from keras.layers import Input, Flatten, Dense, Dropout
-from keras import optimizers
+from keras.layers import Input, GlobalAveragePooling2D, Dense, Dropout
+from keras.optimizers import SGD
+
+from config import INCEPTION_WEIGHTS
 
 
-def load_resnet50(n_classes, weights=None):
-    model = resnet50(n_classes)
+def load_model(n_classes, weights=None):
     if weights:
-        model.load_weights(weights) 
-    return model 
+        """重みが存在するときは途中からの学習なのでモデルを半解凍
+           SGDを使用して細かく学習する
+        """
+        model = model_inceptionv3(n_classes, freeze=False)
+        model.load_weights(weights)
+        model.compile(optimizer=SGD(lr=0.0001, momentum=0.9),
+                      loss='categorical_crossentropy')
+    else:
+        """デフォルトはinceptionを凍結してtopのみがtrainable
+        """
+        model = model_inceptionv3(n_classes, freeze=True)
+        model.compile(optimizer='rmsprop',
+                      loss='categorical_crossentropy')
+    return model
 
 
-def resnet50(n_classes):
+def model_inceptionv3(n_classes, freeze=True):
     """ topなしresnet
-        Note:Resnetの出力をflattenすると131072
+        Note: Inception v3のデフォルト入力サイズは(299, 299)
     """
-    input_tensor = Input(shape=(256, 256, 3))
-    resnet = ResNet50(include_top=False, weights=None,
-                      input_tensor=input_tensor)
-    
-    resnet.load_weights('src/resnet50_notop.h5')
+    input_tensor = Input(shape=(299, 299, 3))
+    # create the base pre-trained model
+    base_model = InceptionV3(weights=INCEPTION_WEIGHTS,
+                             include_top=False,
+                             input_tensor=input_tensor)
 
-    top_model = Sequential()
-    top_model.add(Flatten(input_shape=resnet.output_shape[1:]))
+    #: top layers
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    x = Dense(1024, activation='relu')(x)
+    predictions = Dense(n_classes, activation='softmax')(x)
 
-    top_model.add(Dense(512, activation='softmax'))
-    top_model.add(Dropout(0.4))
-    top_model.add(Dense(n_classes, activation='softmax'))
+    #: 最終モデル
+    model = Model(inputs=base_model.input, outputs=predictions)
 
-    model = Model(input=ResNet50.input, output=top_model(resnet.output))
-    model.compile(loss='categorical_crossentropy',
-                  optimizer=optimizers.SGD(lr=1e-3, momentum=0.9),
-                  metrics=['accuracy'])
+    # mixedレイヤーがブロックの区切り
+    if freeze:
+        for layer in base_model.layers:
+            layer.trainable = False
+    else:
+        for layer in model.layers[:249]:
+            layer.trainable = False
+        for layer in model.layers[249:]:
+            layer.trainable = True
 
     return model

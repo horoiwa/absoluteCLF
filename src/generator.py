@@ -8,7 +8,7 @@ from keras.preprocessing.image import ImageDataGenerator
 def customGenerator(batch_size, train_path, image_folder, aug_dict,
                     image_color_mode="grayscale",
                     image_save_prefix="image",
-                    save_to_dir=None, target_size=(256, 256),
+                    save_to_dir=None, target_size=(299, 299),
                     seed=np.random.randint(1, 9999)):
     #: test mode
     if not aug_dict:

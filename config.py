@@ -1,3 +1,4 @@
+INCEPTION_WEIGHTS = 'src/inception_v3_notop.h5'
 
 CONFIGS = {"image_augmentation": True,
            "contrast_augmentation": True,
