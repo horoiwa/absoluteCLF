@@ -1,10 +1,10 @@
 import os
 
-from config import BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, EPOCHS
+from config import BATCH_SIZE, DATA_GEN_ARGS
 from src.generator import customGenerator
 
 
-def main():
+def generator_test():
     """ 使う時はconfig.pyと同じディレクトリに移動して使用
     """
     os.makedirs('test_generator')
@@ -18,4 +18,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    generator_test()
