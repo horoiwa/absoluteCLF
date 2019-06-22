@@ -41,7 +41,7 @@ def get_latestname(name, n):
         return currentname
     else:
         return None
-        
+
 
 if __name__ == '__main__':
     folder_check()

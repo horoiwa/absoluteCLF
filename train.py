@@ -8,7 +8,7 @@ from config import BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, EPOCHS
 from src.generator import customGenerator
 from src.processing import preprocessing
 from src.util import cleanup, folder_check, get_uniquename, get_latestname
-
+from src.models import load_resnet50
 
 def main(prepare, train):
     categories = os.listdir('images/train')
@@ -63,18 +63,19 @@ def run_training():
                                        monitor='loss', verbose=1,
                                        save_best_only=True)
 
-    trained_weight = get_latestname("__checkpoints__/model_", 1) 
-    model = load_model(trained_weight) 
+    n_classes = len(os.listdir('__dataset__/train/*'))
+    n_train_images = len(glob.glob('__dataset__/train/*/*'))
+    n_valid_images = len(glob.glob('__dataset__/valid/*/*'))
 
-    n_train_images = len(glob.glob('__dataset__/train/*'))
-    n_valid_images = len(glob.glob('__dataset__/valid/*'))
+    trained_weight = get_latestname("__checkpoints__/model_", 1) 
+    model = load_resnet50(n_classes, trained_weight) 
     model.fit_generator(trainGene, 
                         steps_per_epoch=n_train_images // BATCH_SIZE,
                         epochs=EPOCHS,
                         validation_data=validGene,
                         validation_steps=n_valid_images // BATCH_SIZE,
                         callbacks=[model_checkpoint])
-    
+
 
 if __name__ == '__main__':
     main(prepare=False, train=True)
