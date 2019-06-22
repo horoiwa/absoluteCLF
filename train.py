@@ -8,12 +8,13 @@ from config import BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, EPOCHS
 from src.generator import customGenerator
 from src.processing import preprocessing
 from src.util import cleanup, folder_check, get_uniquename, get_latestname
-from src.models import load_resnet50
+from src.models import load_model
+
 
 def main(prepare, train):
     categories = os.listdir('images/train')
     print("Detected classes:", categories)
-    
+
     if prepare:
         print("Create Dataset")
         cleanup()
@@ -57,9 +58,9 @@ def run_training():
     if os.path.exists("__checkpoints__"):
         shutil.rmtree("__checkpoints__")
     os.makedirs("checkpoints")
-     
+
     hdfname = get_uniquename("__checkpoints__/model_", 1)
-    model_checkpoint = ModelCheckpoint('{}.hdf5'.format(hdfname), 
+    model_checkpoint = ModelCheckpoint('{}.hdf5'.format(hdfname),
                                        monitor='loss', verbose=1,
                                        save_best_only=True)
 
@@ -67,15 +68,31 @@ def run_training():
     n_train_images = len(glob.glob('__dataset__/train/*/*'))
     n_valid_images = len(glob.glob('__dataset__/valid/*/*'))
 
-    trained_weight = get_latestname("__checkpoints__/model_", 1) 
-    model = load_resnet50(n_classes, trained_weight) 
-    model.fit_generator(trainGene, 
+    #: 2倍epoch訓練するのである
+    print("ベースモデル凍結：訓練開始")
+    trained_weight = get_latestname("__checkpoints__/model_", 1)
+    model = load_model(n_classes, trained_weight)
+    model.fit_generator(trainGene,
                         steps_per_epoch=n_train_images // BATCH_SIZE,
                         epochs=EPOCHS,
                         validation_data=validGene,
                         validation_steps=n_valid_images // BATCH_SIZE,
                         callbacks=[model_checkpoint])
 
+    print("初期訓練の一時停止：モデルのリロードを開始")
+    trained_weight = get_latestname("__checkpoints__/model_", 1)
+    model = load_model(n_classes, trained_weight)
+    print("2つのinceptionブロックを解凍：訓練再開")
+
+    model.fit_generator(trainGene,
+                        steps_per_epoch=n_train_images // BATCH_SIZE,
+                        epochs=EPOCHS,
+                        validation_data=validGene,
+                        validation_steps=n_valid_images // BATCH_SIZE,
+                        callbacks=[model_checkpoint])
+
+    print("訓練の正常終了を確認")
+
 
 if __name__ == '__main__':
-    main(prepare=False, train=True)
+    main(prepare=True, train=True)
