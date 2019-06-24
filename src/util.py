@@ -26,15 +26,16 @@ def folder_check():
 
 
 def get_uniquename(name, n):
-    uniquename = name + str(n)
+    uniquename = name + str(n) + '.hdf5'
     if os.path.exists(uniquename):
-        uniquename = get_uniquename(name, n+1) 
-    return uniquename
+        uniquename = get_uniquename(name, n+1)
+    else:
+        return name + str(n)
 
 
 def get_latestname(name, n):
-    currentname = name + str(n)
-    nextname = name + str(n+1)
+    currentname = name + str(n) + '.hdf5'
+    nextname = name + str(n+1) + '.hdf5'
     if os.path.exists(nextname):
         get_latestname(name, n+1)
     elif os.path.exists(currentname):

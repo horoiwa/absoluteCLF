@@ -6,25 +6,28 @@ from keras.optimizers import SGD
 from config import INCEPTION_WEIGHTS
 
 
-def load_model(n_classes, weights=None):
-    if weights:
+def load_model(n_classes, weights=None, freeze=None):
+    if freeze == 'second' or freeze == 'final':
         """重みが存在するときは途中からの学習なのでモデルを半解凍
            SGDを使用して細かく学習する
         """
-        model = model_inceptionv3(n_classes, freeze=False)
+        model = model_inceptionv3(n_classes, freeze=freeze)
         model.load_weights(weights)
         model.compile(optimizer=SGD(lr=0.0001, momentum=0.9),
-                      loss='categorical_crossentropy')
-    else:
+                      loss='categorical_crossentropy',
+                      metrics=['acc'])
+
+    elif freeze == 'initial':
         """デフォルトはinceptionを凍結してtopのみがtrainable
         """
-        model = model_inceptionv3(n_classes, freeze=True)
+        model = model_inceptionv3(n_classes, freeze=freeze)
         model.compile(optimizer='rmsprop',
-                      loss='categorical_crossentropy')
+                      loss='categorical_crossentropy',
+                      metrics=['acc'])
     return model
 
 
-def model_inceptionv3(n_classes, freeze=True):
+def model_inceptionv3(n_classes, freeze=None):
     """ topなしresnet
         Note: Inception v3のデフォルト入力サイズは(299, 299)
     """
@@ -44,13 +47,18 @@ def model_inceptionv3(n_classes, freeze=True):
     model = Model(inputs=base_model.input, outputs=predictions)
 
     # mixedレイヤーがブロックの区切り
-    if freeze:
+    if freeze == 'initial':
         for layer in base_model.layers:
             layer.trainable = False
-    else:
+    elif freeze == "second":
         for layer in model.layers[:249]:
             layer.trainable = False
         for layer in model.layers[249:]:
+            layer.trainable = True
+    elif freeze == 'final':
+        for layer in model.layers[:197]:
+            layer.trainable = False
+        for layer in model.layers[197:]:
             layer.trainable = True
 
     return model
