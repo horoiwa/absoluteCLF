@@ -24,6 +24,9 @@ def load_model(n_classes, weights=None, freeze=None):
         model.compile(optimizer='rmsprop',
                       loss='categorical_crossentropy',
                       metrics=['acc'])
+    elif freeze == 'inference':
+        model = model_inceptionv3(n_classes, freeze='final')
+
     return model
 
 
@@ -40,7 +43,7 @@ def model_inceptionv3(n_classes, freeze=None):
     #: top layers
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
-    x = Dense(1024, activation='relu')(x)
+    x = Dropout(0.7)(x)
     predictions = Dense(n_classes, activation='softmax')(x)
 
     #: 最終モデル

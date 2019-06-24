@@ -6,25 +6,21 @@ CONFIGS = {"image_augmentation": True,
            "fine_tunining": True,
            "predict_proba": True}
 
-BATCH_SIZE = 16
+BATCH_SIZE = 6
 
-INITIAL_EPOCHS = 1
-SECOND_EPOCHS = 1
-FINAL_EPOCHS = 1
+INITIAL_EPOCHS = 10
+SECOND_EPOCHS = 50
+FINAL_EPOCHS = 50
 
 DATA_GEN_ARGS = dict(rescale=1./255,
-                     rotation_range=0.2,
-                     width_shift_range=0.05,
-                     height_shift_range=0.05,
-                     brightness_range=[0.9, 1.0],
-                     shear_range=0.05,
-                     zoom_range=0.05,
+                     shear_range=0.2,
+                     zoom_range=0.2,
                      vertical_flip=False,
-                     horizontal_flip=False,
+                     horizontal_flip=True,
                      fill_mode='nearest')
 
 DATA_GEN_ARGS_MIN = dict(rescale=1./255,
-                         vertical_flip=True,
+                         vertical_flip=False,
                          horizontal_flip=True,
                          fill_mode='nearest')
 
@@ -47,5 +43,15 @@ Note:
 ヒストリーの可視化
 初期訓練が甘いと破綻?
 やはりガチャはある
-imagedatagenは過学習の原因になる
+imagedatagenは過学習の原因になる?
+カテゴリ少ないときはDenseは最低限かつDropoutきつくするのがよい
+
+train_genとvalid_genは同じaugmentationを行うべき
+テスト時もこれを行うことでアンサンブル予測的になる？？
+
+mixed_upとかいうやばいaugmentation
+最後はsigmoidの方がぶれがでてよいかも？？
+
+弱いESを入れたい
+
 """

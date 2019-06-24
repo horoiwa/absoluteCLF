@@ -1,10 +1,12 @@
 import glob
 import os
 import shutil
+
 import matplotlib.pyplot as plt
 
-from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, FINAL_EPOCHS,
-                    INITIAL_EPOCHS, SECOND_EPOCHS, DATA_GEN_ARGS_MIN)
+from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, DATA_GEN_ARGS_MIN,
+                    DATA_GEN_DEFAULT, FINAL_EPOCHS, INITIAL_EPOCHS,
+                    SECOND_EPOCHS)
 from keras.callbacks import ModelCheckpoint
 from src.generator import customGenerator
 from src.models import load_model
@@ -42,6 +44,9 @@ def create_dataset(categories):
 
 
 def run_training():
+    acc_train = []
+    acc_val = []
+
     trainGene = customGenerator(batch_size=BATCH_SIZE,
                                 train_path='__dataset__',
                                 image_folder='train',
@@ -82,6 +87,9 @@ def run_training():
         validation_steps=n_valid_images // BATCH_SIZE,
         callbacks=[model_checkpoint])
 
+    acc_train = acc_train + list(history.history['acc'])
+    acc_val = acc_val + list(history.history['val_acc'])
+
     print("初期訓練の終了：モデルのリロードを開始")
     trained_weight = get_latestname("__checkpoints__/model_", 1)
     print("検出したモデル：", trained_weight)
@@ -95,6 +103,9 @@ def run_training():
         validation_data=validGene,
         validation_steps=n_valid_images // BATCH_SIZE,
         callbacks=[model_checkpoint])
+
+    acc_train = acc_train + list(history.history['acc'])
+    acc_val = acc_val + list(history.history['val_acc'])
 
     print("第二次訓練の終了：モデルのリロードを開始")
     trained_weight = get_latestname("__checkpoints__/model_", 1)
@@ -110,8 +121,11 @@ def run_training():
         validation_steps=n_valid_images // BATCH_SIZE,
         callbacks=[model_checkpoint])
 
+    acc_train = acc_train + list(history.history['acc'])
+    acc_val = acc_val + list(history.history['val_acc'])
     print("訓練の正常終了を確認")
-    print(history.history['acc'])
+    print("acc train:", acc_train)
+    print("acc validation:", acc_val)
 
 if __name__ == '__main__':
     main(prepare=False, train=True)
