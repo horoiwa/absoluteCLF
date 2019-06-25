@@ -8,7 +8,7 @@ CONFIGS = {"image_augmentation": True,
 
 BATCH_SIZE = 6
 
-INITIAL_EPOCHS = 10
+INITIAL_EPOCHS = 3
 SECOND_EPOCHS = 50
 FINAL_EPOCHS = 50
 

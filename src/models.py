@@ -26,6 +26,8 @@ def load_model(n_classes, weights=None, freeze=None):
                       metrics=['acc'])
     elif freeze == 'inference':
         model = model_inceptionv3(n_classes, freeze='final')
+        assert weights, "Error, No model found!!"
+        model.load_weights(weights)
 
     return model
 

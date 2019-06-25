@@ -35,7 +35,7 @@ def create_dataset(categories):
     os.makedirs('__dataset__')
 
     for category in categories:
-        for datatype in ['train', 'valid']:
+        for datatype in ['train', 'valid', 'test']:
             p_images = glob.glob(f'images/{datatype}/{category}/*')
             os.makedirs(f'__dataset__/{datatype}/{category}')
             outdir = f'__dataset__/{datatype}/{category}'
@@ -50,7 +50,7 @@ def run_training():
     trainGene = customGenerator(batch_size=BATCH_SIZE,
                                 train_path='__dataset__',
                                 image_folder='train',
-                                aug_dict=DATA_GEN_ARGS_MIN,
+                                aug_dict=None,
                                 save_to_dir=None,
                                 image_color_mode="rgb",)
 

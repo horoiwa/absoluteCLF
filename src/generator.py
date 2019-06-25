@@ -6,7 +6,7 @@ from keras.preprocessing.image import ImageDataGenerator
 
 
 def customGenerator(batch_size, train_path, image_folder, aug_dict,
-                    image_color_mode="grayscale",
+                    image_color_mode="rgb", shuffle=True,
                     image_save_prefix="image",
                     save_to_dir=None, target_size=(299, 299),
                     seed=np.random.randint(1, 9999)):
@@ -27,9 +27,10 @@ def customGenerator(batch_size, train_path, image_folder, aug_dict,
         batch_size=batch_size,
         save_to_dir=save_to_dir,
         save_prefix=image_save_prefix,
-        shuffle=True,
+        shuffle=shuffle,
         seed=seed)
 
-    for images in custom_generator:
+    return custom_generator
+    #for images in custom_generator:
         #: 任意の処理を挟むことが可能
-        yield images
+        #yield images
