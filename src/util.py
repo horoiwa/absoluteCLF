@@ -44,5 +44,11 @@ def get_latestname(name, n):
         return None
 
 
+def make_defaultfolder():
+    os.makedirs('images/test')
+    os.makedirs('images/train')
+    os.makedirs('images/valid')
+
+
 if __name__ == '__main__':
     folder_check()
