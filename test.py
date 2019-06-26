@@ -11,19 +11,6 @@ from src.util import get_latestname
 from src.generator import customGenerator
 
 
-def predict_with_uncertainty(f, x, n_iter=10):
-    result = np.zeros((n_iter,) + x.shape)
-
-    for iter in range(n_iter):
-        result[iter] = f(x, 1)
-
-    prediction = result.mean(axis=0)
-    uncertainty = result.var(axis=0)
-    return prediction, uncertainty
-
-
-
-
 def main(folder=None):
     if folder:
         inference(folder)
@@ -75,7 +62,3 @@ def inference_testdata():
 
 if __name__ == '__main__':
     main()
-    if False:
-        model = 0
-        f = K.function([model.layers[0].input, K.learning_phase()],
-                       [model.layers[-1].output])
