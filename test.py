@@ -22,8 +22,6 @@ def predict_with_uncertainty(f, x, n_iter=10):
     return prediction, uncertainty
 
 
-def eval_image(model, images):
-    print("hello")
 
 
 def main(folder=None):
@@ -33,7 +31,7 @@ def main(folder=None):
         inference_testdata()
 
 
-def infernece(folder):
+def inference(folder):
     print(folder)
 
 

@@ -50,7 +50,7 @@ def run_training():
     trainGene = customGenerator(batch_size=BATCH_SIZE,
                                 train_path='__dataset__',
                                 image_folder='train',
-                                aug_dict=None,
+                                aug_dict=DATA_GEN_ARGS,
                                 save_to_dir=None,
                                 image_color_mode="rgb",)
 
@@ -113,6 +113,20 @@ def run_training():
     model = load_model(n_classes, weights=trained_weight, freeze='final')
     print("4つのinceptionブロックを解凍：訓練再開")
 
+    trainGene = customGenerator(batch_size=BATCH_SIZE,
+                                train_path='__dataset__',
+                                image_folder='train',
+                                aug_dict=DATA_GEN_ARGS,
+                                save_to_dir=None,
+                                image_color_mode="rgb",)
+
+    validGene = customGenerator(batch_size=BATCH_SIZE,
+                                train_path='__dataset__',
+                                image_folder='valid',
+                                aug_dict=None,
+                                save_to_dir=None,
+                                image_color_mode="rgb",)
+
     history = model.fit_generator(
         trainGene,
         steps_per_epoch=n_train_images // BATCH_SIZE,
@@ -128,4 +142,4 @@ def run_training():
     print("acc validation:", acc_val)
 
 if __name__ == '__main__':
-    main(prepare=False, train=True)
+    main(prepare=True, train=True)
