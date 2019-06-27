@@ -45,7 +45,7 @@ def model_inceptionv3(n_classes, freeze=None):
     #: top layers
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
-    x = Dropout(0.7)(x)
+    x = Dropout(0.5)(x)
     predictions = Dense(n_classes, activation='softmax')(x)
 
     #: 最終モデル
