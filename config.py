@@ -26,14 +26,14 @@ DATA_GEN_ARGS_MIN = dict(rescale=1./255,
 
 DATA_GEN_DEFAULT = dict(
     rescale=1./255,
-    rotation_range=0.2,
+    rotation_range=10,
     width_shift_range=0.05,
     height_shift_range=0.05,
     brightness_range=[0.9, 1.0],
-    shear_range=0.05,
-    zoom_range=0.05,
+    shear_range=0.02,
+    zoom_range=0.02,
     vertical_flip=False,
-    horizontal_flip=False,
+    horizontal_flip=True,
     fill_mode='nearest')
 
 """

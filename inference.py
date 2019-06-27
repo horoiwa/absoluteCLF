@@ -9,9 +9,6 @@ import keras.backend as K
 
 from src.models import load_model
 from src.util import get_latestname
-from src.generator import customGenerator
-from src.models import load_model
-from src.util import get_latestname
 
 
 def main(folderpath):
@@ -61,6 +58,7 @@ def prep_image(image_path):
     image = np.array(image) / 255
 
     return image
+
 
 if __name__ == '__main__':
     folderpath = 'inference'
