@@ -34,6 +34,7 @@ def inference_testdata():
                                aug_dict=None,
                                save_to_dir=None,
                                shuffle=False,
+                               inference=True,
                                image_color_mode="rgb",)
 
     filenames = testGene.filenames
