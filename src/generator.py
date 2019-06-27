@@ -65,3 +65,30 @@ def pca_color_augmentation_modify(image_array_input):
 
     img_out = np.clip(image_array_input + delta, 0, 255).astype(np.uint8)
     return img_out
+
+
+def DummyGenerator(batch_size, train_path, image_folder, aug_dict,
+                   image_color_mode="rgb", shuffle=True,
+                   image_save_prefix="image",
+                   save_to_dir=None, target_size=(299, 299),
+                   inference=False):
+    #: test mode
+    if not aug_dict:
+        aug_dict = dict(rescale=1./255)
+
+    image_folder_path = os.path.join(train_path, image_folder)
+    classes = os.listdir(image_folder_path)
+
+    custom_datagen = ImageDataGenerator(**aug_dict)
+    custom_generator = custom_datagen.flow_from_directory(
+        image_folder_path,
+        classes=classes,
+        class_mode="categorical",
+        color_mode=image_color_mode,
+        target_size=target_size,
+        batch_size=batch_size,
+        save_to_dir=save_to_dir,
+        save_prefix=image_save_prefix,
+        shuffle=shuffle)
+
+    return custom_generator

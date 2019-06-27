@@ -1,6 +1,7 @@
 import glob
 import os
 import shutil
+import random
 
 import matplotlib.pyplot as plt
 
@@ -34,9 +35,29 @@ def main(prepare, train):
 def create_dataset(categories):
     os.makedirs('__dataset__')
 
+    num_images_classes = []
     for category in categories:
-        for datatype in ['train', 'valid', 'test']:
+        for datatype in ['train']:
             p_images = glob.glob(f'images/{datatype}/{category}/*')
+            num_images_classes.append(len(p_images))
+
+    num_images_max = max(num_images_classes)
+    for category in categories:
+        for datatype in ['train']:
+            p_images = glob.glob(f'images/{datatype}/{category}/*')
+            num_images = len(p_images)
+            os.makedirs(f'__dataset__/{datatype}/{category}')
+            outdir = f'__dataset__/{datatype}/{category}'
+            for p_image in p_images:
+                preprocessing(p_image, outdir)
+            if num_images_max - num_images > 0:
+                for i in range(num_images_max - num_images):
+                    p_image = random.choice(p_images)
+                    preprocessing(p_image, outdir, rename=True)
+
+        for datatype in ['valid', 'test']:
+            p_images = glob.glob(f'images/{datatype}/{category}/*')
+            num_images = len(p_images)
             os.makedirs(f'__dataset__/{datatype}/{category}')
             outdir = f'__dataset__/{datatype}/{category}'
             for p_image in p_images:

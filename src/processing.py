@@ -1,10 +1,11 @@
 import os
 import pathlib
+import random
 
 from PIL import Image
 
 
-def preprocessing(p_image, outdir=None):
+def preprocessing(p_image, outdir=None, rename=False):
     name = pathlib.Path(p_image).stem
     image = Image.open(p_image)
 
@@ -12,6 +13,8 @@ def preprocessing(p_image, outdir=None):
 
     if outdir:
         for image, name in zip(images, names):
+            ext = list("abcdefghijklmnopqrstuvwxyz")
+            name = name+'_{}'.format(random.choice(ext)) if rename else name
             image.save(os.path.join(outdir, name+'.jpg'))
 
     return images, names

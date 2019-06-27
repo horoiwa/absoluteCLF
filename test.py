@@ -8,7 +8,7 @@ import keras.backend as K
 
 from src.models import load_model
 from src.util import get_latestname
-from src.generator import customGenerator
+from src.generator import DummyGenerator
 
 
 def main(folder=None):
@@ -28,14 +28,13 @@ def inference_testdata():
     model = load_model(n_classes=len(dirs), weights=weights,
                        freeze='inference')
 
-    testGene = customGenerator(batch_size=1,
-                               train_path='__dataset__',
-                               image_folder='test',
-                               aug_dict=None,
-                               save_to_dir=None,
-                               shuffle=False,
-                               inference=True,
-                               image_color_mode="rgb",)
+    testGene = DummyGenerator(batch_size=1,
+                              train_path='__dataset__',
+                              image_folder='test',
+                              aug_dict=None,
+                              save_to_dir=None,
+                              shuffle=False,
+                              image_color_mode="rgb",)
 
     filenames = testGene.filenames
     nb_samples = len(filenames)
@@ -45,7 +44,7 @@ def inference_testdata():
     columns = list(testGene.class_indices.keys())
     df_predict = pd.DataFrame(predict, columns=columns)
     df_predict['Pred'] = df_predict.idxmax(1)
-    df_predict['True'] = [filename.split("\\")[-2] for filename in filenames]
+    df_predict['True'] = [filename.split("/")[-2] for filename in filenames]
     df_predict['Score'] = (df_predict['Pred'] == df_predict['True']).apply(int)
     df_predict.index = filenames
     df_predict.to_csv('__checkpoints__/test_result.csv')
