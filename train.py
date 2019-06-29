@@ -6,9 +6,11 @@ import random
 import matplotlib.pyplot as plt
 
 from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS_MIN,
-                    DATA_GEN_DEFAULT, FINAL_EPOCHS, INITIAL_EPOCHS,
-                    SECOND_EPOCHS)
+                    DATA_GEN_DEFAULT, EA_EPOCHS, FINAL_EPOCHS,
+                    INITIAL_EPOCHS, SECOND_EPOCHS)
 from keras.callbacks import ModelCheckpoint
+from keras.callbacks import EarlyStopping
+
 from src.generator import customGenerator
 from src.models import load_model
 from src.processing import preprocessing
@@ -92,6 +94,11 @@ def run_training():
                                        verbose=1,
                                        save_best_only=True)
 
+    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0,
+                                   patience=EA_EPOCHS, verbose=0, mode='auto')
+
+    callbacks = [early_stopping, model_checkpoint]
+
     n_classes = len(os.listdir('__dataset__/train/'))
     n_train_images = len(glob.glob('__dataset__/train/*/*'))
     n_valid_images = len(glob.glob('__dataset__/valid/*/*'))
@@ -100,13 +107,14 @@ def run_training():
 
     trained_weight = get_latestname("__checkpoints__/model_", 1)
     model = load_model(n_classes, trained_weight, freeze='initial')
+
     history = model.fit_generator(
         trainGene,
         steps_per_epoch=n_train_images // BATCH_SIZE,
         epochs=INITIAL_EPOCHS,
         validation_data=validGene,
         validation_steps=n_valid_images // BATCH_SIZE,
-        callbacks=[model_checkpoint])
+        callbacks=callbacks)
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])
@@ -123,7 +131,7 @@ def run_training():
         epochs=SECOND_EPOCHS,
         validation_data=validGene,
         validation_steps=n_valid_images // BATCH_SIZE,
-        callbacks=[model_checkpoint])
+        callbacks=callbacks)
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])
@@ -154,7 +162,7 @@ def run_training():
         epochs=FINAL_EPOCHS,
         validation_data=validGene,
         validation_steps=n_valid_images // BATCH_SIZE,
-        callbacks=[model_checkpoint])
+        callbacks=callbacks)
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])

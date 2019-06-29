@@ -12,11 +12,7 @@ INITIAL_EPOCHS = 2
 SECOND_EPOCHS = 2
 FINAL_EPOCHS = 2
 
-
-DATA_GEN_ARGS_MIN = dict(rescale=1./255,
-                         vertical_flip=False,
-                         horizontal_flip=True,
-                         fill_mode='nearest')
+EA_EPOCHS = 10
 
 DATA_GEN_DEFAULT = dict(
     rescale=1./255,
@@ -30,6 +26,10 @@ DATA_GEN_DEFAULT = dict(
     cval=0,
     fill_mode='constant')
 
+DATA_GEN_ARGS_MIN = dict(rescale=1./255,
+                         vertical_flip=False,
+                         horizontal_flip=True,
+                         fill_mode='nearest')
 """
 Note:
 段階的な訓練を導入
