@@ -3,7 +3,8 @@ import shutil
 
 
 def cleanup(mode='all'):
-    folders = ['__dataset__', '__checkpoints__', 'image_test']
+    folders = ['__dataset__', '__checkpoints__', 'image_test',
+               'config_test']
 
     for folder in folders:
         if os.path.exists(folder):

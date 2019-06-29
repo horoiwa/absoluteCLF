@@ -137,7 +137,7 @@ def run_training():
     trainGene = customGenerator(batch_size=BATCH_SIZE,
                                 train_path='__dataset__',
                                 image_folder='train',
-                                aug_dict=DATA_GEN_ARGS,
+                                aug_dict=DATA_GEN_DEFAULT,
                                 save_to_dir=None,
                                 image_color_mode="rgb",)
 

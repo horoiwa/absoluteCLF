@@ -4,14 +4,14 @@ import shutil
 import numpy as np
 from PIL import Image
 
-from config import BATCH_SIZE, DATA_GEN_ARGS
+from config import BATCH_SIZE, DATA_GEN_DEFAULT
 from src.generator import customGenerator
 
 
 def generator_test():
     """ 使う時はconfig.pyと同じディレクトリに移動して使用
     """
-    dirname = 'image_test'
+    dirname = 'config_test'
     if os.path.exists(dirname):
         shutil.rmtree(dirname)
 
@@ -19,7 +19,7 @@ def generator_test():
     trainGene = customGenerator(batch_size=50,
                                 train_path='images',
                                 image_folder='train',
-                                aug_dict=DATA_GEN_ARGS,
+                                aug_dict=DATA_GEN_DEFAULT,
                                 save_to_dir=None,
                                 image_color_mode="rgb",
                                 inference=False)

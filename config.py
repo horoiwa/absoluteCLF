@@ -8,16 +8,10 @@ CONFIGS = {"image_augmentation": True,
 
 BATCH_SIZE = 6
 
-INITIAL_EPOCHS = 10
-SECOND_EPOCHS = 50
-FINAL_EPOCHS = 50
+INITIAL_EPOCHS = 2
+SECOND_EPOCHS = 2
+FINAL_EPOCHS = 2
 
-DATA_GEN_ARGS = dict(rescale=1./255,
-                     shear_range=0.2,
-                     zoom_range=0.2,
-                     vertical_flip=False,
-                     horizontal_flip=True,
-                     fill_mode='nearest')
 
 DATA_GEN_ARGS_MIN = dict(rescale=1./255,
                          vertical_flip=False,
@@ -26,15 +20,15 @@ DATA_GEN_ARGS_MIN = dict(rescale=1./255,
 
 DATA_GEN_DEFAULT = dict(
     rescale=1./255,
-    rotation_range=10,
-    width_shift_range=0.,
-    height_shift_range=0.,
-    brightness_range=[0.9, 1.0],
-    shear_range=0.02,
-    zoom_range=0.02,
+    rotation_range=40,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    shear_range=0.0,
+    zoom_range=0.1,
     vertical_flip=False,
     horizontal_flip=True,
-    fill_mode='nearest')
+    cval=0,
+    fill_mode='constant')
 
 """
 Note:
