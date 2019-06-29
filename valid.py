@@ -14,6 +14,7 @@ from lime import lime_image
 
 from src.models import load_model
 from src.util import get_latestname
+from config import TARGET_SIZE
 NUM_SAMPLES = 100
 
 
@@ -52,7 +53,7 @@ def debug_model(category, category_dir, labels, mode):
         if predicted_label == true_label:
             continue
 
-        image = image.reshape(299, 299, 3)
+        image = image.reshape(TARGET_SIZE[0], TARGET_SIZE[1], 3)
         explainer = lime_image.LimeImageExplainer()
         explanation = explainer.explain_instance(image, model.predict,
                                                  top_labels=len(n_classes),
@@ -80,9 +81,12 @@ def debug_model(category, category_dir, labels, mode):
 
 def prep_image(image_path):
     image = Image.open(image_path)
-    image = image.resize((299, 299), Image.LANCZOS)
+    image = image.resize(TARGET_SIZE, Image.LANCZOS)
     image = np.array(image) / 255
-    image = image.reshape(299, 299, 3).reshape(1, 299, 299, 3)
+    image = image.reshape(TARGET_SIZE[0],
+                          TARGET_SIZE[1], 3).reshape(1,
+                                                     TARGET_SIZE[0],
+                                                     TARGET_SIZE[1], 3)
 
     return image
 

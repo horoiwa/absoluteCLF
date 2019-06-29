@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS_MIN,
                     DATA_GEN_DEFAULT, EA_EPOCHS, FINAL_EPOCHS,
-                    INITIAL_EPOCHS, SECOND_EPOCHS)
+                    INITIAL_EPOCHS, SECOND_EPOCHS, TARGET_SIZE)
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
 
@@ -75,6 +75,7 @@ def run_training():
                                 image_folder='train',
                                 aug_dict=DATA_GEN_DEFAULT,
                                 save_to_dir=None,
+                                target_size=TARGET_SIZE,
                                 image_color_mode="rgb",)
 
     validGene = customGenerator(batch_size=BATCH_SIZE,
@@ -82,6 +83,7 @@ def run_training():
                                 image_folder='valid',
                                 aug_dict=None,
                                 save_to_dir=None,
+                                target_size=TARGET_SIZE,
                                 image_color_mode="rgb",)
 
     if os.path.exists("__checkpoints__"):
@@ -147,6 +149,7 @@ def run_training():
                                 image_folder='train',
                                 aug_dict=DATA_GEN_DEFAULT,
                                 save_to_dir=None,
+                                target_size=TARGET_SIZE,
                                 image_color_mode="rgb",)
 
     validGene = customGenerator(batch_size=BATCH_SIZE,
@@ -154,6 +157,7 @@ def run_training():
                                 image_folder='valid',
                                 aug_dict=None,
                                 save_to_dir=None,
+                                target_size=TARGET_SIZE,
                                 image_color_mode="rgb",)
 
     history = model.fit_generator(

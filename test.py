@@ -10,6 +10,7 @@ import keras.backend as K
 from src.models import load_model
 from src.util import get_latestname
 from src.generator import DummyGenerator
+from config import TARGET_SIZE
 
 
 def main(folder=None):
@@ -35,6 +36,7 @@ def inference_testdata():
                               aug_dict=None,
                               save_to_dir=None,
                               shuffle=False,
+                              target_size=TARGET_SIZE,
                               image_color_mode="rgb",)
 
     filenames = testGene.filenames

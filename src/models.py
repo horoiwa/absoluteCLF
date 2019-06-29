@@ -3,7 +3,7 @@ from keras.models import Sequential, Model
 from keras.layers import Input, GlobalAveragePooling2D, Dense, Dropout
 from keras.optimizers import SGD
 
-from config import INCEPTION_WEIGHTS
+from config import INCEPTION_WEIGHTS, RESNET_WEIGHTS, TARGET_SIZE
 
 
 def load_model(n_classes, weights=None, freeze=None):
@@ -34,9 +34,9 @@ def load_model(n_classes, weights=None, freeze=None):
 
 def model_inceptionv3(n_classes, freeze=None):
     """ topなしresnet
-        Note: Inception v3のデフォルト入力サイズは(299, 299)
+        Note: Inception v3のデフォルト入力サイズは(TARGET_SIZE)
     """
-    input_tensor = Input(shape=(299, 299, 3))
+    input_tensor = Input(shape=(TARGET_SIZE[0], TARGET_SIZE[1], 3))
     # create the base pre-trained model
     base_model = InceptionV3(weights=INCEPTION_WEIGHTS,
                              include_top=False,

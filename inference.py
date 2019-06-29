@@ -7,6 +7,7 @@ from PIL import Image
 import numpy as np
 import keras.backend as K
 
+from config import TARGET_SIZE
 from src.models import load_model
 from src.util import get_latestname
 
@@ -33,7 +34,9 @@ def main(folderpath):
 
 
 def prediction(model, n_classes, image):
-    image = image.reshape(299, 299, 3).reshape(1, 299, 299, 3)
+    image = image.reshape(TARGET_SIZE[0],
+                          TARGET_SIZE[1], 3).reshape(1, TARGET_SIZE[0],
+                                                     TARGET_SIZE[1], 3)
     f = K.function([model.layers[0].input, K.learning_phase()],
                    [model.layers[-1].output])
 
@@ -54,7 +57,7 @@ def predict_with_uncertainty(f, n_classes, x, n_iter=10):
 
 def prep_image(image_path):
     image = Image.open(image_path)
-    image = image.resize((299, 299), Image.LANCZOS)
+    image = image.resize(TARGET_SIZE, Image.LANCZOS)
     image = np.array(image) / 255
 
     return image

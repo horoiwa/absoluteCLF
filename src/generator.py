@@ -8,7 +8,7 @@ from keras.preprocessing.image import ImageDataGenerator
 def customGenerator(batch_size, train_path, image_folder, aug_dict,
                     image_color_mode="rgb", shuffle=True,
                     image_save_prefix="image",
-                    save_to_dir=None, target_size=(299, 299),
+                    save_to_dir=None, target_size=None,
                     inference=False):
     #: test mode
     if not aug_dict:
@@ -71,7 +71,7 @@ def pca_color_augmentation_modify(image_array_input):
 def DummyGenerator(batch_size, train_path, image_folder, aug_dict,
                    image_color_mode="rgb", shuffle=True,
                    image_save_prefix="image",
-                   save_to_dir=None, target_size=(299, 299),
+                   save_to_dir=None, target_size=None,
                    inference=False):
     #: test mode
     if not aug_dict:
