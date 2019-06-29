@@ -5,7 +5,7 @@ import random
 
 import matplotlib.pyplot as plt
 
-from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS, DATA_GEN_ARGS_MIN,
+from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS_MIN,
                     DATA_GEN_DEFAULT, FINAL_EPOCHS, INITIAL_EPOCHS,
                     SECOND_EPOCHS)
 from keras.callbacks import ModelCheckpoint
@@ -71,7 +71,7 @@ def run_training():
     trainGene = customGenerator(batch_size=BATCH_SIZE,
                                 train_path='__dataset__',
                                 image_folder='train',
-                                aug_dict=DATA_GEN_ARGS,
+                                aug_dict=DATA_GEN_DEFAULT,
                                 save_to_dir=None,
                                 image_color_mode="rgb",)
 
@@ -158,9 +158,20 @@ def run_training():
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])
+
     print("訓練の正常終了を確認")
     print("acc train:", acc_train)
     print("acc validation:", acc_val)
+    epochs = range(1, int(INITIAL_EPOCHS) + int(SECOND_EPOCHS)
+                   + int(FINAL_EPOCHS) + 1)
+
+    plt.plot(epochs, acc_train, label='train')
+    plt.plot(epochs, acc_val, label='valid')
+    plt.legend()
+    plt.savefig('__checkpoints__/training_history.png')
+
+    shutil.copy('config.py', '__checkpoints__/')
+
 
 if __name__ == '__main__':
-    main(prepare=True, train=True)
+    main(prepare=False, train=True)
