@@ -44,6 +44,7 @@ def customGenerator(batch_size, train_path, image_folder, aug_dict,
 
 def pca_color_augmentation_modify(image_array_input):
     """
+        RGBカラー画像限定
         コピぺ：https://qiita.com/koshian2/items/78de8ccd09dd2998ddfc
     """
     assert image_array_input.ndim == 3 and image_array_input.shape[2] == 3

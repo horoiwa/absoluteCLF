@@ -54,4 +54,5 @@ mixed_upとかいうやばいaugmentation
 
 弱いESを入れたい
 
+PCAコントラストaugmentationは結果を大きく改善した
 """

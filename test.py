@@ -1,6 +1,7 @@
 import os
 import glob
 import pandas as pd
+import pathlib
 
 from PIL import Image
 import numpy as np
@@ -37,6 +38,7 @@ def inference_testdata():
                               image_color_mode="rgb",)
 
     filenames = testGene.filenames
+    category_names = [pathlib.Path(fname).parts[-2] for fname in filenames]
     nb_samples = len(filenames)
 
     predict = model.predict_generator(testGene, steps=nb_samples)
@@ -44,7 +46,7 @@ def inference_testdata():
     columns = list(testGene.class_indices.keys())
     df_predict = pd.DataFrame(predict, columns=columns)
     df_predict['Pred'] = df_predict.idxmax(1)
-    df_predict['True'] = [filename.split("/")[-2] for filename in filenames]
+    df_predict['True'] = category_names
     df_predict['Score'] = (df_predict['Pred'] == df_predict['True']).apply(int)
     df_predict.index = filenames
     df_predict.to_csv('__checkpoints__/test_result.csv')
