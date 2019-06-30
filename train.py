@@ -174,8 +174,7 @@ def run_training():
     print("訓練の正常終了を確認")
     print("acc train:", acc_train)
     print("acc validation:", acc_val)
-    epochs = range(1, int(INITIAL_EPOCHS) + int(SECOND_EPOCHS)
-                   + int(FINAL_EPOCHS) + 1)
+    epochs = range(1, len(acc_train) + 1)
 
     plt.plot(epochs, acc_train, label='train')
     plt.plot(epochs, acc_val, label='valid')
