@@ -1,3 +1,5 @@
+""" Model configuration
+"""
 INCEPTION_WEIGHTS = 'src/inception_v3_notop.h5'
 RESNET_WEIGHTS = 'src/resnet50_notop.h5'
 
@@ -9,9 +11,9 @@ CONFIGS = {"image_augmentation": True,
 
 BATCH_SIZE = 6
 
-INITIAL_EPOCHS = 20
-SECOND_EPOCHS = 100
-FINAL_EPOCHS = 100
+INITIAL_EPOCHS = 1
+SECOND_EPOCHS = 1
+FINAL_EPOCHS = 1
 
 EA_EPOCHS = 10
 

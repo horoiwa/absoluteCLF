@@ -4,7 +4,7 @@ import shutil
 import numpy as np
 from PIL import Image
 
-from config import BATCH_SIZE, DATA_GEN_DEFAULT
+from config import BATCH_SIZE, DATA_GEN_DEFAULT, TARGET_SIZE
 from src.generator import customGenerator
 
 
@@ -21,6 +21,7 @@ def generator_test():
                                 image_folder='train',
                                 aug_dict=DATA_GEN_DEFAULT,
                                 save_to_dir=None,
+                                target_size=TARGET_SIZE,
                                 image_color_mode="rgb",
                                 inference=False)
 
