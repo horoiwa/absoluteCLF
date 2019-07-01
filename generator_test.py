@@ -32,6 +32,5 @@ def generator_test():
         image.save(f'{dirname}/{i}.png')
 
 
-
 if __name__ == '__main__':
     generator_test()

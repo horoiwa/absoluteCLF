@@ -4,6 +4,7 @@ INCEPTION_WEIGHTS = 'src/inception_v3_notop.h5'
 RESNET_WEIGHTS = 'src/resnet50_notop.h5'
 
 TARGET_SIZE = (768, 768)
+
 CONFIGS = {"image_augmentation": True,
            "contrast_augmentation": True,
            "fine_tunining": True,
@@ -11,7 +12,7 @@ CONFIGS = {"image_augmentation": True,
 
 BATCH_SIZE = 3
 
-INITIAL_EPOCHS = 15
+INITIAL_EPOCHS = 30
 SECOND_EPOCHS = 150
 FINAL_EPOCHS = 150
 
