@@ -3,20 +3,21 @@
 INCEPTION_WEIGHTS = 'src/inception_v3_notop.h5'
 RESNET_WEIGHTS = 'src/resnet50_notop.h5'
 
-TARGET_SIZE = (512, 512)
+TARGET_SIZE = (768, 768)
 CONFIGS = {"image_augmentation": True,
            "contrast_augmentation": True,
            "fine_tunining": True,
            "predict_proba": True}
 
-BATCH_SIZE = 6
+BATCH_SIZE = 3
 
-INITIAL_EPOCHS = 1
-SECOND_EPOCHS = 1
-FINAL_EPOCHS = 1
+INITIAL_EPOCHS = 15
+SECOND_EPOCHS = 150
+FINAL_EPOCHS = 150
 
-EA_EPOCHS = 10
+EA_EPOCHS = 5
 
+PCA_MIN = 0
 DATA_GEN_DEFAULT = dict(
     rescale=1./255,
     rotation_range=40,
@@ -35,21 +36,8 @@ DATA_GEN_ARGS_MIN = dict(rescale=1./255,
                          fill_mode='nearest')
 """
 Note:
-段階的な訓練を導入
-初期訓練はearly stopping導入するほうがよいかも
-ヒストリーの可視化
-初期訓練が甘いと破綻?
-やはりガチャはある
-imagedatagenは過学習の原因になる?
 カテゴリ少ないときはDenseは最低限かつDropoutきつくするのがよい
-
-train_genとvalid_genは同じaugmentationを行うべき
-テスト時もこれを行うことでアンサンブル予測的になる？？
-
-mixed_upとかいうやばいaugmentation
-最後はsigmoidの方がぶれがでてよいかも？？
-
-弱いESを入れたい
-
+fill_modeを黒にすると結果が改善
+入力画像サイズを大きくすると結果が大きく改善した
 PCAコントラストaugmentationは結果を大きく改善した
 """

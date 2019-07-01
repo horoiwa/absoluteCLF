@@ -120,6 +120,7 @@ def run_training():
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])
+    n_epoch_1 = len(list(history.history['acc']))
 
     print("初期訓練の終了：モデルのリロードを開始")
     trained_weight = get_latestname("__checkpoints__/model_", 1)
@@ -137,6 +138,7 @@ def run_training():
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])
+    n_epoch_2 = len(list(history.history['acc']))
 
     print("第二次訓練の終了：モデルのリロードを開始")
     trained_weight = get_latestname("__checkpoints__/model_", 1)
@@ -170,6 +172,7 @@ def run_training():
 
     acc_train = acc_train + list(history.history['acc'])
     acc_val = acc_val + list(history.history['val_acc'])
+    n_epoch_3 = len(list(history.history['acc']))
 
     print("訓練の正常終了を確認")
     print("acc train:", acc_train)
@@ -178,6 +181,16 @@ def run_training():
 
     plt.plot(epochs, acc_train, label='train')
     plt.plot(epochs, acc_val, label='valid')
+
+    #: トレーニングの区切り
+    plt.plot([n_epoch_1, n_epoch_1], [0, 1.0], "--",
+             color='darkred', alpha=0.7)
+    plt.plot([n_epoch_1 + n_epoch_2, n_epoch_1 + n_epoch_2],
+             [0, 1.0], "--", color='darkred', alpha=0.7)
+    plt.plot([n_epoch_1 + n_epoch_2 + n_epoch_3,
+              n_epoch_1 + n_epoch_2 + n_epoch_3],
+             [0, 1.0], "--", color='darkred', alpha=0.7)
+
     plt.legend()
     plt.savefig('__checkpoints__/training_history.png')
 
