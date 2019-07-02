@@ -1,8 +1,9 @@
 import os
 
 import numpy as np
-
 from keras.preprocessing.image import ImageDataGenerator
+
+from config import PCA_COLOR_RANGE
 
 
 def customGenerator(batch_size, train_path, image_folder, aug_dict,
@@ -60,7 +61,12 @@ def pca_color_augmentation_modify(image_array_input):
     cov = np.cov(img, rowvar=False)
     lambd_eigen_value, p_eigen_vector = np.linalg.eig(cov)
 
-    rand = np.random.randn(3) * 0.1
+    while True:
+        rand = np.random.randn(3) * 0.1
+        if rand.mean() > PCA_COLOR_RANGE[0]:
+            if rand.mean() < PCA_COLOR_RANGE[1]:
+                break
+
     delta = np.dot(p_eigen_vector, rand*lambd_eigen_value)
     delta = (delta * 255.0).astype(np.int32)[np.newaxis, np.newaxis, :]
 
