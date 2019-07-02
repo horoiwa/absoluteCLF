@@ -63,8 +63,8 @@ def pca_color_augmentation_modify(image_array_input):
 
     while True:
         rand = np.random.randn(3) * 0.1
-        if rand.mean() > PCA_COLOR_RANGE[0]:
-            if rand.mean() < PCA_COLOR_RANGE[1]:
+        if np.all(rand > PCA_COLOR_RANGE[0]):
+            if np.all(rand < PCA_COLOR_RANGE[1]):
                 break
 
     delta = np.dot(p_eigen_vector, rand*lambd_eigen_value)
