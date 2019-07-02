@@ -14,7 +14,7 @@ from lime import lime_image
 
 from src.models import load_model
 from src.util import get_latestname
-from config import TARGET_SIZE
+from config import TARGET_SIZE, BASEMODEL
 NUM_SAMPLES = 100
 
 
@@ -40,7 +40,8 @@ def debug_model(category, category_dir, labels, mode):
 
     n_classes = os.listdir('images/train')
     trained_weight = get_latestname("__checkpoints__/model_", 1)
-    model = load_model(len(n_classes), trained_weight, freeze='inference')
+    model = load_model(len(n_classes), trained_weight,
+                       freeze='inference', basemodel=BASEMODEL)
 
     for image_path in images_path:
         image = prep_image(image_path)

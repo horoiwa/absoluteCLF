@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 import keras.backend as K
 
-from config import TARGET_SIZE
+from config import TARGET_SIZE, BASEMODEL
 from src.models import load_model
 from src.util import get_latestname
 
@@ -17,7 +17,7 @@ def main(folderpath):
     weights = get_latestname("__checkpoints__/model_", 1)
     n_classes = len(dirs)
     model = load_model(n_classes=n_classes, weights=weights,
-                       freeze='inference')
+                       freeze='inference', basemodel=BASEMODEL)
 
     df = pd.DataFrame()
     images_path = glob.glob(folderpath+'/*')

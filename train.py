@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from config import (BATCH_SIZE, CONFIGS, DATA_GEN_ARGS_MIN,
                     DATA_GEN_DEFAULT, EA_EPOCHS, FINAL_EPOCHS,
-                    INITIAL_EPOCHS, SECOND_EPOCHS, TARGET_SIZE)
+                    INITIAL_EPOCHS, SECOND_EPOCHS, TARGET_SIZE, BASEMODEL)
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
 
@@ -108,7 +108,8 @@ def run_training():
     print("ベースモデル凍結：訓練開始")
 
     trained_weight = get_latestname("__checkpoints__/model_", 1)
-    model = load_model(n_classes, trained_weight, freeze='initial')
+    model = load_model(n_classes, trained_weight,
+                       freeze='initial', basemodel=BASEMODEL)
 
     history = model.fit_generator(
         trainGene,
@@ -125,7 +126,8 @@ def run_training():
     print("初期訓練の終了：モデルのリロードを開始")
     trained_weight = get_latestname("__checkpoints__/model_", 1)
     print("検出したモデル：", trained_weight)
-    model = load_model(n_classes, weights=trained_weight, freeze='second')
+    model = load_model(n_classes, weights=trained_weight,
+                       freeze='second', basemodel=BASEMODEL)
     print("2つのinceptionブロックを解凍：訓練再開")
 
     history = model.fit_generator(
@@ -143,7 +145,8 @@ def run_training():
     print("第二次訓練の終了：モデルのリロードを開始")
     trained_weight = get_latestname("__checkpoints__/model_", 1)
     print("検出したモデル：", trained_weight)
-    model = load_model(n_classes, weights=trained_weight, freeze='final')
+    model = load_model(n_classes, weights=trained_weight,
+                       freeze='final', basemodel=BASEMODEL)
     print("4つのinceptionブロックを解凍：訓練再開")
 
     trainGene = customGenerator(batch_size=BATCH_SIZE,

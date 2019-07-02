@@ -10,7 +10,7 @@ import keras.backend as K
 from src.models import load_model
 from src.util import get_latestname
 from src.generator import DummyGenerator
-from config import TARGET_SIZE
+from config import TARGET_SIZE, BASEMODEL
 
 
 def main(folder=None):
@@ -28,7 +28,7 @@ def inference_testdata():
     dirs = os.listdir('images/test/')
     weights = get_latestname("__checkpoints__/model_", 1)
     model = load_model(n_classes=len(dirs), weights=weights,
-                       freeze='inference')
+                       freeze='inference', basemodel=BASEMODEL)
 
     testGene = DummyGenerator(batch_size=1,
                               train_path='__dataset__',
