@@ -7,7 +7,7 @@ INCEPTION_WEIGHTS = 'src/inception_v3_notop.h5'
 XCEPTION_WEIGHTS = 'src/xception_notop.h5'
 RESNET_WEIGHTS = 'src/resnet50_notop.h5'
 
-TARGET_SIZE = (299, 299)
+TARGET_SIZE = (512, 512)
 
 CONFIGS = {"image_augmentation": True,
            "contrast_augmentation": True,
@@ -16,11 +16,11 @@ CONFIGS = {"image_augmentation": True,
 
 BATCH_SIZE = 6
 
-INITIAL_EPOCHS = 1
-SECOND_EPOCHS = 1
-FINAL_EPOCHS = 1
+INITIAL_EPOCHS = 30
+SECOND_EPOCHS = 150
+FINAL_EPOCHS = 150
 
-EA_EPOCHS = 5
+EA_EPOCHS = 10
 
 #: 基本的にはこの設定値なら影響がない
 PCA_COLOR_RANGE = (-0.3, 0.3)
