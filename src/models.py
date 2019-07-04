@@ -128,6 +128,7 @@ def model_xception(n_classes, freeze=None):
 
     #: addレイヤーがブロックの区切り
     #: 変更　125-105では二回目の学習効果が薄かった
+    #: 上層：125 115 中層：105 下層：95
     if freeze == 'initial':
         for layer in base_model.layers:
             layer.trainable = False
@@ -137,9 +138,9 @@ def model_xception(n_classes, freeze=None):
         for layer in model.layers[115:]:
             layer.trainable = True
     elif freeze == 'final':
-        for layer in model.layers[:95]:
+        for layer in model.layers[:105]:
             layer.trainable = False
-        for layer in model.layers[95:]:
+        for layer in model.layers[105:]:
             layer.trainable = True
 
     return model
