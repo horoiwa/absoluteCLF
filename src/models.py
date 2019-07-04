@@ -126,19 +126,20 @@ def model_xception(n_classes, freeze=None):
     #: 最終モデル
     model = Model(inputs=base_model.input, outputs=predictions)
 
-    # mixedレイヤーがブロックの区切り
+    #: addレイヤーがブロックの区切り
+    #: 変更　125-105では二回目の学習効果が薄かった
     if freeze == 'initial':
         for layer in base_model.layers:
             layer.trainable = False
     elif freeze == "second":
-        for layer in model.layers[:125]:
+        for layer in model.layers[:115]:
             layer.trainable = False
-        for layer in model.layers[125:]:
+        for layer in model.layers[115:]:
             layer.trainable = True
     elif freeze == 'final':
-        for layer in model.layers[:105]:
+        for layer in model.layers[:95]:
             layer.trainable = False
-        for layer in model.layers[105:]:
+        for layer in model.layers[95:]:
             layer.trainable = True
 
     return model
