@@ -9,11 +9,6 @@ RESNET_WEIGHTS = 'src/resnet50_notop.h5'
 
 TARGET_SIZE = (512, 512)
 
-CONFIGS = {"image_augmentation": True,
-           "contrast_augmentation": True,
-           "fine_tunining": True,
-           "predict_proba": True}
-
 BATCH_SIZE = 6
 
 INITIAL_EPOCHS = 30
