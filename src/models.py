@@ -21,7 +21,7 @@ def load_model(n_classes, weights=None, freeze=None, basemodel=None):
 
 
 def load_inception(n_classes, weights=None, freeze=None):
-    if freeze == 'second' or freeze == 'final':
+    if freeze == 'second' or freeze == 'third' or freeze == 'final':
         """重みが存在するときは途中からの学習なのでモデルを半解凍
            SGDを使用して細かく学習する
         """
@@ -77,17 +77,22 @@ def model_inceptionv3(n_classes, freeze=None):
             layer.trainable = False
         for layer in model.layers[249:]:
             layer.trainable = True
-    elif freeze == 'final':
+    elif freeze == 'third':
         for layer in model.layers[:197]:
             layer.trainable = False
         for layer in model.layers[197:]:
             layer.trainable = True
+    elif freeze == 'final':
+        for layer in model.layers:
+            layer.trainable = True
+    else:
+        raise Exception('Kwyword error')
 
     return model
 
 
 def load_xception(n_classes, weights=None, freeze=None):
-    if freeze == 'second' or freeze == 'final':
+    if freeze == 'second' or freeze == 'third' or freeze == 'final':
         model = model_xception(n_classes, freeze=freeze)
         model.load_weights(weights)
         model.compile(optimizer=SGD(lr=0.0001, momentum=0.9),
@@ -103,6 +108,8 @@ def load_xception(n_classes, weights=None, freeze=None):
         model = model_xception(n_classes, freeze='final')
         assert weights, "Error, No model found!!"
         model.load_weights(weights)
+    else:
+        raise Exception('Keyword error')
 
     return model
 
@@ -137,10 +144,15 @@ def model_xception(n_classes, freeze=None):
             layer.trainable = False
         for layer in model.layers[115:]:
             layer.trainable = True
-    elif freeze == 'final':
+    elif freeze == 'third':
         for layer in model.layers[:105]:
             layer.trainable = False
         for layer in model.layers[105:]:
             layer.trainable = True
+    elif freeze == 'final':
+        for layer in model.layers:
+            layer.trainable = True
+    else:
+        raise Exception('Kwyword error')
 
     return model
