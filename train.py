@@ -6,7 +6,7 @@ import shutil
 import matplotlib.pyplot as plt
 
 from config import (
-    BASEMODEL, BATCH_SIZE, DATA_GEN_ARGS_MIN, DATA_GEN_DEFAULT, EA_EPOCHS,
+    BASEMODEL, BATCH_SIZE, DATA_GEN_DEFAULT, EA_EPOCHS,
     FINAL_EPOCHS, INITIAL_EPOCHS, SECOND_EPOCHS, TARGET_SIZE, THIRD_EPOCHS)
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from src.generator import customGenerator
