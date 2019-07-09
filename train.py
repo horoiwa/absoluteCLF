@@ -2,6 +2,7 @@ import glob
 import os
 import random
 import shutil
+import click
 
 import matplotlib.pyplot as plt
 
@@ -15,11 +16,14 @@ from src.processing import preprocessing
 from src.util import cleanup, folder_check, get_latestname, get_uniquename
 
 
-def main(prepare, train):
+@click.command()
+@click.option('--prep', '-p', is_flag=True)
+@click.option('--train', '-t', is_flag=True)
+def main(prep, train):
     categories = os.listdir('images/train')
     print("Detected classes:", categories)
 
-    if prepare:
+    if prep:
         print("Create Dataset")
         cleanup()
         folder_check()
@@ -238,4 +242,4 @@ def run_training():
 
 
 if __name__ == '__main__':
-    main(prepare=False, train=True)
+    main()

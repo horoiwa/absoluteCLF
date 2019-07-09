@@ -33,7 +33,7 @@ absoluteCLF
 ### 使い方
 
 - トレーニングの開始<br>
-`python train.py`
+`python train.py -p -t`
 
 - `images/test`フォルダ内の画像に対して推論<br>
 `python test.py`
