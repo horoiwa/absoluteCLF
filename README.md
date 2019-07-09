@@ -1,25 +1,47 @@
 ## absoluteCLF
 
-一般的なtips全部盛りの分類器を作成する
+xceptionモデルからの転移学習による分類モデル作成の自動化ツール
 
-### Features
+強力なData augumentation機能
 
->image augmentation
+<br>
 
->contrast augmentation
+### 準備
 
->fine tuning
+`images/train` および `images/valid` に<br>
+カテゴリ数と同数のフォルダを作成し、画像を配置する
+```
+absoluteCLF
+|
+|-images
+|    |-train
+|    |   |-classA
+|    |   |-classB
+|    |
+|    |-valid
+|    |   |-classA
+|    |   |-classB
+|    |
+|    |-test
+|        |-classA
+|        |-classB
+|-src
+```
 
->predict probability
-
->SVC連結モード
-
-> random erasing
+<br>
 
 ### 使い方
 
-`images/train` および `images/valid` にカテゴリ数と同数のフォルダを作成し、画像を配置する
+- トレーニングの開始<br>
+`python train.py`
 
-> 例）　`images/train/classA` 、 `images/train/classB`
+- `images/test`フォルダ内の画像に対して推論<br>
+`python test.py`
 
-`images/test`には推論したい画像をそのまま配置する
+- 指定フォルダ内の画像に対して推論<br>
+`python predict.py -f FOLDER -o OUTPUT.csv`
+
+<br>
+
+### CONFIG
+`config.py`へ設定を記述する
