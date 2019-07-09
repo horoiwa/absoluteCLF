@@ -42,6 +42,9 @@ def inference_testdata():
     filenames = testGene.filenames
     category_names = [pathlib.Path(fname).parts[-2] for fname in filenames]
     nb_samples = len(filenames)
+    if not nb_samples:
+        print("No images found")
+        return
 
     predict = model.predict_generator(testGene, steps=nb_samples)
 
